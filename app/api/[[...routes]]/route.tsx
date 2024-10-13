@@ -152,12 +152,12 @@ app.frame('/trans', (c) => {
     action: '/finish',
     image: (
       <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-        Perform a transaction
+        Voting Contract
       </div>
     ),
     intents: [
-      <TextInput placeholder="Value (ETH)" />,
       <Button.Transaction target="/vote">Vote</Button.Transaction>,
+      <Button.Transaction target="/getVote">Find out</Button.Transaction>,
     ]
   })
 })
@@ -185,6 +185,16 @@ app.transaction('/vote', (c) => {
   })
 })
 
+app.transaction('/getVote', (c) => {
+  // Send transaction response.
+  return c.contract({
+    abi,
+    chainId: 'eip155:11155111',
+    to: '0xdc0A0D70bf0418DA345D98190E24d4D70FD38bA1',
+    functionName: 'voteResult',
+    args: [1]
+  })
+})
 devtools(app, { serveStatic })
 
 export const GET = handle(app)
