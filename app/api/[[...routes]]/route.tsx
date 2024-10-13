@@ -176,10 +176,10 @@ app.frame('/finish', (c) => {
 
 app.transaction('/vote', (c) => {
   // Send transaction response.
-  return c.send({
-    //@ts-ignore
-    chainId: 'eip155:17000',
-    to: '0x444f20A5d578862bf84B6d14EC3CA0c8Be8e555F',
+  return c.contract({
+    abi,
+    chainId: 'eip155:11155111',
+    to: '0xdc0A0D70bf0418DA345D98190E24d4D70FD38bA1',
     functionName: 'vote',
     args: [true, 1]
   })
