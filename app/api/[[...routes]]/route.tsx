@@ -2,6 +2,7 @@
 
 import { Button, Frog, TextInput, parseEther } from 'frog'
 import { devtools } from 'frog/dev'
+
 const abi = [
   {
     "inputs": [
@@ -149,15 +150,15 @@ app.frame('/lose', (c) => {
 
 app.frame('/trans', (c) => {
   return c.res({
-    action: '/finish',
     image: (
       <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
         Voting Contract
       </div>
     ),
     intents: [
-      <Button.Transaction target="/vote">Vote</Button.Transaction>,
-      <Button.Transaction target="/getVote">Find out</Button.Transaction>,
+        <TextInput placeholder="ID" />,
+      <Button.Transaction action='/finish' target="/vote">Vote</Button.Transaction>,
+      <Button action='/getVote'>Find out</Button>,
     ]
   })
 })
@@ -176,24 +177,32 @@ app.frame('/finish', (c) => {
 
 app.transaction('/vote', (c) => {
   // Send transaction response.
+  const id = parseInt(c.inputText || "1") || 1
   return c.contract({
     abi,
     chainId: 'eip155:11155111',
     to: '0xdc0A0D70bf0418DA345D98190E24d4D70FD38bA1',
     functionName: 'vote',
-    args: [true, 1]
+    args: [true, id]
   })
 })
 
-app.transaction('/getVote', (c) => {
-  // Send transaction response.
-  return c.contract({
-    abi,
-    chainId: 'eip155:11155111',
-    to: '0xdc0A0D70bf0418DA345D98190E24d4D70FD38bA1',
-    functionName: 'voteResult',
-    args: [1]
-  })
+app.frame('/getVote', (c) => {
+
+    const inputText = c.frameData?.inputText  || ""
+
+    const newSearchParams = new URLSearchParams({
+        text: inputText,
+    })
+
+    return c.res({
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/api/voteTest?${newSearchParams}`,
+        intents: [
+            <TextInput placeholder="ID" />,
+            <Button.Transaction action='/finish' target="/vote">Vote</Button.Transaction>,
+            <Button action='/getVote'>Find out</Button>,
+        ]
+    })
 })
 devtools(app, { serveStatic })
 
