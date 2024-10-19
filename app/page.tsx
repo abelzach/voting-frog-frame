@@ -48,14 +48,16 @@ const cardData = [
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <main className="p-2">
+        <div className="flex justify-center items-center">
       <DynamicWidget />
       <BiconomyTest />
+      </div>
       <div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-x-10">
+          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-x-10 w-full">
             {cardData.map((card) => (
-              <div key={card.id}>
+              <div key={card.id} className="w-full sm:w-auto">
                 <ThreeDCardDemo
                   title={card.title}
                   description={card.description}
