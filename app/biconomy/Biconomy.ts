@@ -5,6 +5,7 @@ import {
   DEFAULT_ENTRYPOINT_ADDRESS,
   ECDSAOwnershipValidationModule,
   DEFAULT_ECDSA_OWNERSHIP_MODULE,
+  SupportedSigner,
 } from "@biconomy/account";
 import { sepolia } from "viem/chains";
 
@@ -27,7 +28,7 @@ const createValidationModule = async (signer: any) => {
   });
 };
 
-export const createSmartAccount = async (walletClient: any) => {
+export const createSmartAccount = async (walletClient: SupportedSigner) => {
   const validationModule = await createValidationModule(walletClient);
   console.log("creating");
 
