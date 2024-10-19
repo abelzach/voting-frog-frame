@@ -1,126 +1,76 @@
-import { getFrameMetadata } from 'frog/next'
-import type { Metadata } from 'next'
-import Image from 'next/image'
+import { getFrameMetadata } from "frog/next";
+import type { Metadata } from "next";
 
-import styles from './page.module.css'
-import { DynamicWidget } from '@dynamic-labs/sdk-react-core'
-import BiconomyTest from './components/test'
+import styles from "./page.module.css";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+import BiconomyTest from "./components/test";
+
+import { ThreeDCardDemo } from "./cards";
 
 export async function generateMetadata(): Promise<Metadata> {
-    const frameTags = await getFrameMetadata(
-        `${process.env.VERCEL_URL || 'http://localhost:3000'}/api`,
-    )
-    return {
-        other: frameTags,
-    }
+  const frameTags = await getFrameMetadata(
+    `${process.env.VERCEL_URL || "http://localhost:3000"}/api`
+  );
+  return {
+    other: frameTags,
+  };
 }
+
+const cardData = [
+  {
+    id: 1,
+    title: "Election Prediction",
+    description: "Vote and predict the next winner",
+    imageUrl:
+      "https://i.abcnewsfe.com/a/4849d1a2-c1bb-4212-ba38-0ed57a829483/donald-trump-rt-jef-241017_1729173339293_hpMain.jpg",
+    link: "/api/dev?url=%2Fapi%2Ftrans",
+    warpLink: "https://warpcast.com/~/developers/frames?url=https%3A%2F%2Fvoting-frog-frame.vercel.app%2Fapi%2Ftrans"
+  },
+  {
+    id: 2,
+    title: "Crypto Price",
+    description: "Predict the price of Bitcoin next week",
+    imageUrl:
+      "https://chainfluent.io/wp-content/uploads/2022/01/ARTICLE-CRYPTO-2-1.png",
+    link: "/api/dev",
+    warpLink: "https://warpcast.com/~/developers/frames?url=https%3A%2F%2Fvoting-frog-frame.vercel.app%2Fapi%2Ftrans"
+  },
+  {
+    id: 3,
+    title: "Stock Market",
+    description: "Will the stock market go up tomorrow?",
+    imageUrl:
+      "https://www.livemint.com/lm-img/img/2023/10/01/1600x900/Sectoral_Index_change_1696146869322_1696146869610.jpg",
+    link: "/api/dev",
+    warpLink: "https://warpcast.com/~/developers/frames?url=https%3A%2F%2Fvoting-frog-frame.vercel.app%2Fapi%2Ftrans"
+  },
+];
 
 export default function Home() {
-    return (
-        <main className={styles.main}>
-            <DynamicWidget />
-            <BiconomyTest />
-            <div className={styles.description}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <p>
-                        Get started by editing&nbsp;
-                        <code className={styles.code}>app/page.tsx</code>
-                    </p>
-                    <p>
-                        Head to{' '}
-                        <a
-                            href="/api/dev"
-                            style={{ display: 'inline', fontWeight: 'semibold' }}
-                        >
-                            <code className={styles.code}>localhost:3000/api</code>
-                        </a>{' '}
-                        for your frame endpoint.
-                    </p>
-                </div>
-                <div>
-                    <a
-                        href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        By{' '}
-                        <Image
-                            src="/vercel.svg"
-                            alt="Vercel Logo"
-                            className={styles.vercelLogo}
-                            width={100}
-                            height={24}
-                            priority
-                        />
-                    </a>
-                </div>
-            </div>
-
-            <div className={styles.center}>
-                <Image
-                    className={styles.logo}
-                    src="/next.svg"
-                    alt="Next.js Logo"
-                    width={180}
-                    height={37}
-                    priority
+  return (
+    <main className={styles.main}>
+      <DynamicWidget />
+      <BiconomyTest />
+      <div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-x-10">
+            {cardData.map((card) => (
+              <div key={card.id}>
+                <ThreeDCardDemo
+                  title={card.title}
+                  description={card.description}
+                  imageUrl={card.imageUrl}
+                  link={card.link}
+                  warpLink={card.warpLink}
                 />
-            </div>
-
-            <div className={styles.grid}>
-                <a
-                    href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-                    className={styles.card}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <h2>
-                        Docs <span>-&gt;</span>
-                    </h2>
-                    <p>Find in-depth information about Next.js features and API.</p>
-                </a>
-
-                <a
-                    href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-                    className={styles.card}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <h2>
-                        Learn <span>-&gt;</span>
-                    </h2>
-                    <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-                </a>
-
-                <a
-                    href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-                    className={styles.card}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <h2>
-                        Templates <span>-&gt;</span>
-                    </h2>
-                    <p>Explore starter templates for Next.js.</p>
-                </a>
-
-                <a
-                    href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-                    className={styles.card}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <h2>
-                        Deploy <span>-&gt;</span>
-                    </h2>
-                    <p>
-                        Instantly deploy your Next.js site to a shareable URL with Vercel.
-                    </p>
-                </a>
-            </div>
-        </main>
-    )
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </main>
+  );
 }
 function useBiconomyAccount(): { smartAccount: any } {
-    throw new Error('Function not implemented.')
+  throw new Error("Function not implemented.");
 }
