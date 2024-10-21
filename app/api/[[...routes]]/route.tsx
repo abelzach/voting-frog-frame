@@ -1,6 +1,7 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog, TextInput, parseEther } from 'frog'
+import { xmtpSupport } from '@/app/xmtp/xmtpMiddleware'
+import { Button, Frog, TextInput } from 'frog'
 import { devtools } from 'frog/dev'
 
 const abi = [
@@ -71,14 +72,24 @@ const app = new Frog({
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
   title: 'Frog Frame',
+  unstable_metaTags: [
+      { property: `of:accepts`, content: "vNext" },
+      { property: `of:accepts:xmtp`, content: "vNext" },
+  ],
 })
 
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 
+app.use(xmtpSupport());
+
 app.frame('/', (c) => {
   const { buttonValue, inputText, status } = c
   const person = inputText || buttonValue
+  // @ts-ignore
+  const { verifiedWalletAddress } = c?.var || {};
+  console.log(verifiedWalletAddress);
+
   return c.res({
     image: (
       <div
@@ -113,6 +124,7 @@ app.frame('/', (c) => {
           {status === 'response'
             ? `You have voted for ${person ? ` ${person.toUpperCase()}!!` : ''}`
             : 'Vote for who will win the election!'}
+               Veriied Wallet address:  {verifiedWalletAddress}
         </div>
       </div>
     ),
