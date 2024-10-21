@@ -1,5 +1,6 @@
 /** @jsxImportSource frog/jsx */
 
+import { addMetaTags } from '@/app/xmtp/xmtpMetaTags'
 import { xmtpSupport } from '@/app/xmtp/xmtpMiddleware'
 import { Button, Frog, TextInput } from 'frog'
 import { devtools } from 'frog/dev'
@@ -69,26 +70,21 @@ import { serveStatic } from 'frog/serve-static'
 const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
+  title: "Open Frames Starter Frog",
+  ...addMetaTags("xmtp"),
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
-  title: 'Frog Frame',
-  unstable_metaTags: [
-      { property: `of:accepts`, content: "vNext" },
-      { property: `of:accepts:xmtp`, content: "vNext" },
-  ],
-})
+});
 
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 
-app.use(xmtpSupport());
+
+app.use(xmtpSupport);
 
 app.frame('/', (c) => {
   const { buttonValue, inputText, status } = c
   const person = inputText || buttonValue
-  // @ts-ignore
-  const { verifiedWalletAddress } = c?.var || {};
-  console.log(verifiedWalletAddress);
 
   return c.res({
     image: (
@@ -124,7 +120,6 @@ app.frame('/', (c) => {
           {status === 'response'
             ? `You have voted for ${person ? ` ${person.toUpperCase()}!!` : ''}`
             : 'Vote for who will win the election!'}
-               Veriied Wallet address:  {verifiedWalletAddress}
         </div>
       </div>
     ),
@@ -176,11 +171,23 @@ app.frame('/trans', (c) => {
 })
 
 app.frame('/finish', (c) => {
+  let address: `0x${string}`;
+
+  // XMTP verified address
+  const { verifiedWalletAddress } = (c?.var as any) || {};
+
+  if (verifiedWalletAddress) {
+    address = verifiedWalletAddress as `0x${string}`;
+  } else {
+    address = "0x0" as `0x${string}`;
+  }
+
   const { transactionId } = c
   return c.res({
     image: (
       <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
         Transaction ID: {transactionId}
+        XMTP Address ID: {address}
       </div>
     )
   })
