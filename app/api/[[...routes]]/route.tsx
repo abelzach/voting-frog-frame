@@ -84,7 +84,8 @@ app.use(xmtpSupport);
 
 app.frame('/', (c) => {
   const { buttonValue, inputText, status } = c
-  const person = inputText || buttonValue
+  const option = buttonValue
+  const number = inputText
 
   return c.res({
     image: (
@@ -118,15 +119,17 @@ app.frame('/', (c) => {
           }}
         >
           {status === 'response'
-            ? `You have voted for ${person ? ` ${person.toUpperCase()}!!` : ''}`
-            : 'Vote for who will win the election!'}
+            ? `You have selected ${option ? ` ${option.toUpperCase()} at number ${number}!` : ''}`
+            : 'Sic Bo!'}
         </div>
       </div>
     ),
     intents: [
-      <TextInput placeholder="Who will win the election?" />,
-      <Button value="trump">Trump</Button>,
-      <Button value="kamala">Kamala</Button>,
+      <TextInput placeholder="Bet number?" />,
+      <Button value="big">Big</Button>,
+      <Button value="small">Small</Button>,
+      <Button value="specific_triple">Specific Triple</Button>,
+      <Button value="any_triple">Any Triple</Button>,
       status === 'response' && <Button.Reset>Reset</Button.Reset>,
     ],
   })
