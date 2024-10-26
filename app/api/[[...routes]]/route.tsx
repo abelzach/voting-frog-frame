@@ -1,75 +1,75 @@
 /** @jsxImportSource frog/jsx */
 
-import { addMetaTags } from '@/app/xmtp/xmtpMetaTags'
-import { xmtpSupport } from '@/app/xmtp/xmtpMiddleware'
-import { Button, Frog, TextInput } from 'frog'
-import { devtools } from 'frog/dev'
+import { addMetaTags } from "@/app/xmtp/xmtpMetaTags";
+import { xmtpSupport } from "@/app/xmtp/xmtpMiddleware";
+import { Button, Frog, TextInput } from "frog";
+import { devtools } from "frog/dev";
 
 const abi = [
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "bool",
-        "name": "_vote",
-        "type": "bool"
+        internalType: "bool",
+        name: "_vote",
+        type: "bool",
       },
       {
-        "internalType": "uint256",
-        "name": "voteId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "voteId",
+        type: "uint256",
+      },
     ],
-    "name": "vote",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "vote",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "name": "voteRegistry",
-    "outputs": [
+    name: "voteRegistry",
+    outputs: [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "voteId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "voteId",
+        type: "uint256",
+      },
     ],
-    "name": "voteResult",
-    "outputs": [
+    name: "voteResult",
+    outputs: [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
+    stateMutability: "view",
+    type: "function",
+  },
+];
 // import { neynar } from 'frog/hubs'
-import { handle } from 'frog/next'
-import { serveStatic } from 'frog/serve-static'
+import { handle } from "frog/next";
+import { serveStatic } from "frog/serve-static";
 
 const app = new Frog({
-  assetsPath: '/',
-  basePath: '/api',
+  assetsPath: "/",
+  basePath: "/api",
   title: "Open Frames Starter Frog",
   ...addMetaTags("xmtp"),
   // Supply a Hub to enable frame verification.
@@ -79,71 +79,79 @@ const app = new Frog({
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 
-
 app.use(xmtpSupport);
 
-app.frame('/', (c) => {
-  const { buttonValue, inputText, status } = c
-  const option = buttonValue
-  const number = inputText
+app.frame("/", (c) => {
+  const { buttonValue, inputText, status } = c;
+  const option = buttonValue;
+  const number = inputText;
 
   let address: `0x${string}` = "0x0";
   let client1: string = "hello";
   if (status === "response") {
-  // XMTP verified address
-  const { client, verifiedWalletAddress } = (c?.var as any) || {};
-  console.log(c)
+    // XMTP verified address
+    const { client, verifiedWalletAddress } = (c?.var as any) || {};
+    console.log(c);
 
-  if (verifiedWalletAddress) {
-    address = verifiedWalletAddress as `0x${string}`;
-  } else {
-    address = "0x0" as `0x${string}`;
+    if (verifiedWalletAddress) {
+      address = verifiedWalletAddress as `0x${string}`;
+    } else {
+      address = "0x0" as `0x${string}`;
+    }
+    console.log(address);
+    console.log(client);
+    client1 = client;
   }
-  console.log(address)
-  console.log(client)
-  client1 = client;
-  }
-
 
   return c.res({
     image: (
       <div
         style={{
-          alignItems: 'center',
+          alignItems: "center",
           background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
-          backgroundSize: '100% 100%',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
-          height: '100%',
-          justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
+            status === "response"
+              ? "linear-gradient(to right, #432889, #17101F)"
+              : "black",
+          backgroundSize: "100% 100%",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "nowrap",
+          height: "100%",
+          justifyContent: "center",
+          textAlign: "center",
+          width: "100%",
         }}
       >
         <div
           style={{
-            color: 'white',
+            color: "white",
             fontSize: 60,
-            fontStyle: 'normal',
-            letterSpacing: '-0.025em',
+            fontStyle: "normal",
+            letterSpacing: "-0.025em",
             lineHeight: 1.4,
             marginTop: 30,
-            padding: '0 120px',
-            whiteSpace: 'pre-wrap',
-            display: 'flex',
+            padding: "0 120px",
+            whiteSpace: "pre-wrap",
+            display: "flex",
           }}
         >
-          {status === 'response' ?
-              <div style={{ color: 'white', backgroundColor: 'black', display: 'flex', fontSize: 60 }}>
-                `You have selected ${option ? ` ${option.toUpperCase()} at number ${number}!` : ''}`
-                Address: {address}
-                Client: {client1}
+          {status === "response" ? (
+            <div
+              style={{
+                color: "white",
+                backgroundColor: "black",
+                display: "flex",
+                fontSize: 60,
+              }}
+            >
+              `You have selected $
+              {option ? ` ${option.toUpperCase()} at number ${number}!` : ""}`
+              Address: {address}
+              Client: {client1}
             </div>
-            : 'Sic Bo!'}
+          ) : (
+            "Sic Bo!"
+          )}
         </div>
       </div>
     ),
@@ -153,94 +161,100 @@ app.frame('/', (c) => {
       <Button value="small">Small</Button>,
       <Button value="specific_triple">Specific Triple</Button>,
       <Button value="any_triple">Any Triple</Button>,
-      status === 'response' && <Button.Reset>Reset</Button.Reset>,
+      status === "response" && <Button.Reset>Reset</Button.Reset>,
     ],
-  })
-})
+  });
+});
 
-
-app.frame('/lose', (c) => {
-  const { buttonValue, inputText, status } = c
-  const person = inputText || buttonValue
+app.frame("/lose", (c) => {
+  const { buttonValue, inputText, status } = c;
+  const person = inputText || buttonValue;
   return c.res({
     image: (
-      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-        {status === 'initial' ? (
-          'Vote for who will lose the election!'
-        ) : (
-          `You have voted for: ${buttonValue?.toUpperCase()}`
-        )}
+      <div style={{ color: "white", display: "flex", fontSize: 60 }}>
+        {status === "initial"
+          ? "Vote for who will lose the election!"
+          : `You have voted for: ${buttonValue?.toUpperCase()}`}
       </div>
     ),
     intents: [
       <TextInput placeholder="Who will lose the election?" />,
       <Button value="trump">Trump</Button>,
       <Button value="kamala">Kamala</Button>,
-      status === 'response' && <Button.Reset>Reset</Button.Reset>,
+      status === "response" && <Button.Reset>Reset</Button.Reset>,
     ],
-  })
-})
+  });
+});
 
-app.frame('/trans', (c) => {
+app.frame("/trans", (c) => {
   return c.res({
     image: (
-      <div style={{ color: 'white', backgroundColor: 'black', display: 'flex', fontSize: 60 }}>
+      <div
+        style={{
+          color: "white",
+          backgroundColor: "black",
+          display: "flex",
+          fontSize: 60,
+        }}
+      >
         Voting Contract
       </div>
     ),
     intents: [
-        <TextInput placeholder="ID" />,
-      <Button.Transaction action='/finish' target="/vote">Vote</Button.Transaction>,
-      <Button action='/getVote'>Find out</Button>,
-    ]
-  })
-})
+      <TextInput placeholder="ID" />,
+      <Button.Transaction action="/finish" target="/vote">
+        Vote
+      </Button.Transaction>,
+      <Button action="/getVote">Find out</Button>,
+    ],
+  });
+});
 
-app.frame('/finish', (c) => {
-  const { transactionId } = c
+app.frame("/finish", (c) => {
+  const { transactionId } = c;
   return c.res({
     image: (
-      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+      <div style={{ color: "white", display: "flex", fontSize: 60 }}>
         Transaction ID: {transactionId}
       </div>
-    )
-  })
-})
+    ),
+  });
+});
 
-
-app.transaction('/vote', (c) => {
+app.transaction("/vote", (c) => {
   // Send transaction response.
-  const id = parseInt(c.inputText || "1") || 1
+  const id = parseInt(c.inputText || "1") || 1;
   return c.contract({
     abi,
-    chainId: 'eip155:11155111',
-    to: '0xdc0A0D70bf0418DA345D98190E24d4D70FD38bA1',
-    functionName: 'vote',
-    args: [true, id]
-  })
-})
+    chainId: "eip155:11155111",
+    to: "0xdc0A0D70bf0418DA345D98190E24d4D70FD38bA1",
+    functionName: "vote",
+    args: [true, id],
+  });
+});
 
-app.frame('/getVote', (c) => {
+app.frame("/getVote", (c) => {
+  const inputText = c.frameData?.inputText || "";
 
-    const inputText = c.frameData?.inputText  || ""
+  const newSearchParams = new URLSearchParams({
+    text: inputText,
+  });
 
-    const newSearchParams = new URLSearchParams({
-        text: inputText,
-    })
+  return c.res({
+    image: `${process.env.NEXT_PUBLIC_SITE_URL}/api/voteTest?${newSearchParams}`,
+    intents: [
+      <TextInput placeholder="ID" />,
+      <Button.Transaction action="/finish" target="/vote">
+        Vote
+      </Button.Transaction>,
+      <Button action="/getVote">Find out</Button>,
+    ],
+  });
+});
+devtools(app, { serveStatic });
 
-    return c.res({
-        image: `${process.env.NEXT_PUBLIC_SITE_URL}/api/voteTest?${newSearchParams}`,
-        intents: [
-            <TextInput placeholder="ID" />,
-            <Button.Transaction action='/finish' target="/vote">Vote</Button.Transaction>,
-            <Button action='/getVote'>Find out</Button>,
-        ]
-    })
-})
-devtools(app, { serveStatic })
-
-export const GET = handle(app)
-export const POST = handle(app)
+export const GET = handle(app);
+export const POST = handle(app);
 
 // NOTE: That if you are using the devtools and enable Edge Runtime, you will need to copy the devtools
 // static assets to the public folder. You can do this by adding a script to your package.json:
