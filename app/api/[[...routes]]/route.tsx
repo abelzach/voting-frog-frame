@@ -159,21 +159,6 @@ app.frame('/lose', (c) => {
 })
 
 app.frame('/trans', (c) => {
-  return c.res({
-    image: (
-      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-        Voting Contract
-      </div>
-    ),
-    intents: [
-        <TextInput placeholder="ID" />,
-      <Button.Transaction action='/finish' target="/vote">Vote</Button.Transaction>,
-      <Button action='/getVote'>Find out</Button>,
-    ]
-  })
-})
-
-app.frame('/finish', (c) => {
   let address: `0x${string}`;
 
   // XMTP verified address
@@ -185,12 +170,27 @@ app.frame('/finish', (c) => {
     address = "0x0" as `0x${string}`;
   }
 
+  return c.res({
+    image: (
+      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+        Voting Contract
+        XMTP Address ID: {address}
+      </div>
+    ),
+    intents: [
+        <TextInput placeholder="ID" />,
+      <Button.Transaction action='/finish' target="/vote">Vote</Button.Transaction>,
+      <Button action='/getVote'>Find out</Button>,
+    ]
+  })
+})
+
+app.frame('/finish', (c) => {
   const { transactionId } = c
   return c.res({
     image: (
       <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
         Transaction ID: {transactionId}
-        XMTP Address ID: {address}
       </div>
     )
   })
