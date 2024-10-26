@@ -14,7 +14,7 @@ export const xmtpSupport = async (c: Context, next: Next) => {
       // Add farcaster check
       c.set("client", "farcaster");
     }
-  }
+  }  
   await next();
 };
 

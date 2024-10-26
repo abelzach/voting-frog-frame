@@ -87,6 +87,24 @@ app.frame('/', (c) => {
   const option = buttonValue
   const number = inputText
 
+  let address: `0x${string}` = "0x0";
+  let client1: string = "hello";
+  if (status === "response") {
+  // XMTP verified address
+  const { client, verifiedWalletAddress } = (c?.var as any) || {};
+  console.log(c)
+
+  if (verifiedWalletAddress) {
+    address = verifiedWalletAddress as `0x${string}`;
+  } else {
+    address = "0x0" as `0x${string}`;
+  }
+  console.log(address)
+  console.log(client)
+  client1 = client;
+  }
+
+
   return c.res({
     image: (
       <div
@@ -116,10 +134,15 @@ app.frame('/', (c) => {
             marginTop: 30,
             padding: '0 120px',
             whiteSpace: 'pre-wrap',
+            display: 'flex',
           }}
         >
-          {status === 'response'
-            ? `You have selected ${option ? ` ${option.toUpperCase()} at number ${number}!` : ''}`
+          {status === 'response' ?
+              <div style={{ color: 'white', backgroundColor: 'black', display: 'flex', fontSize: 60 }}>
+                `You have selected ${option ? ` ${option.toUpperCase()} at number ${number}!` : ''}`
+                Address: {address}
+                Client: {client1}
+            </div>
             : 'Sic Bo!'}
         </div>
       </div>
@@ -159,22 +182,10 @@ app.frame('/lose', (c) => {
 })
 
 app.frame('/trans', (c) => {
-  let address: `0x${string}`;
-
-  // XMTP verified address
-  const { verifiedWalletAddress } = (c?.var as any) || {};
-
-  if (verifiedWalletAddress) {
-    address = verifiedWalletAddress as `0x${string}`;
-  } else {
-    address = "0x0" as `0x${string}`;
-  }
-
   return c.res({
     image: (
       <div style={{ color: 'white', backgroundColor: 'black', display: 'flex', fontSize: 60 }}>
         Voting Contract
-        XMTP Address ID: {address}
       </div>
     ),
     intents: [
