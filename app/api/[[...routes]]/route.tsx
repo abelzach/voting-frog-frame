@@ -141,13 +141,14 @@ app.frame("/", (c) => {
                 color: "white",
                 backgroundColor: "black",
                 display: "flex",
+                flexDirection: "column",
                 fontSize: 60,
               }}
             >
-              `You have selected $
+              `You have selected
               {option ? ` ${option.toUpperCase()} at number ${number}!` : ""}`
-              Address: {address}
-              Client: {client1}
+              <div>Address: {address}</div>
+              <div>Client: {client1}</div>
             </div>
           ) : (
             "Sic Bo!"
