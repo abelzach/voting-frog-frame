@@ -147,8 +147,12 @@ app.frame("/", (c) => {
             >
               `You have selected
               {option ? ` ${option.toUpperCase()} at number ${number}!` : ""}`
-              <div>Address: {address}</div>
-              <div>Client: {client1}</div>
+              <div style={{
+                display: "flex",
+              }}>Address: {address}</div>
+              <div style={{
+                display: "flex",
+              }}>Client: {client1}</div>
             </div>
           ) : (
             "Sic Bo!"
