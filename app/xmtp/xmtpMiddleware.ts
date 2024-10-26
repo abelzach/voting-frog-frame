@@ -17,3 +17,4 @@ export const xmtpSupport = async (c: Context, next: Next) => {
   }
   await next();
 };
+
