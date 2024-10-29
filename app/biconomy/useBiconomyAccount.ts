@@ -1,22 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
-import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { createSmartAccount } from "./Biconomy";
 import { BiconomySmartAccountV2 } from "@biconomy/account";
+import { useWalletClient } from "../dynamic/useWalletClient";
+import { sepolia } from "viem/chains";
 
 export function useBiconomyAccount() {
-  const { primaryWallet } = useDynamicContext();
+  const { walletClient } = useWalletClient(`${sepolia.id}`);
   const [smartAccount, setSmartAccount] =
     useState<BiconomySmartAccountV2 | null>(null);
 
   const createAndSetSmartAccount = useCallback(async () => {
-    if (!primaryWallet) {
+    if (!walletClient) {
       setSmartAccount(null);
       return;
     }
 
     try {
-        // @ts-ignore
-      const walletClient = await primaryWallet.getWalletClient();
       if (walletClient && !smartAccount) {
         console.log("Creating smart account");
         const newSmartAccount = await createSmartAccount(walletClient);
@@ -28,7 +27,7 @@ export function useBiconomyAccount() {
         error
       );
     }
-  }, [primaryWallet, smartAccount]);
+  }, [walletClient, smartAccount]);
 
   useEffect(() => {
     createAndSetSmartAccount();
