@@ -39,6 +39,8 @@ const games = [
 const MainPage = () => {
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Physical Game");
+  const [challenger_1_Address, setChallenger_1_Address] = useState("address1");
+  const [challenger_2_Address, setChallenger_2_Address] = useState("address2");
 
   const handleJoinClick = () => {
     setIsJoinModalOpen(true);
@@ -55,18 +57,24 @@ const MainPage = () => {
           <DynamicWidget />
           <BiconomyTest />
           <div className="flex justify-between items-center">
-          <Link href="/chat" className="mr-8 relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+            <Link
+              href="/chat"
+              className="mr-8 relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+            >
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+              <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
                 Chat
-            </span>
-          </Link>
-          <button onClick={handleJoinClick} className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-              Join a game
-            </span>
-          </button>
+              </span>
+            </Link>
+            <button
+              onClick={handleJoinClick}
+              className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+            >
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+              <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                Join a game
+              </span>
+            </button>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -80,19 +88,33 @@ const MainPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-gray-400">{game.description}</p>
-                <div className="flex justify-between space-x-4">
-                  <Button
-                    variant="secondary"
-                    className="hover:text-white border-gray-600 hover:bg-gray-700"
-                  >
-                    Vote
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    className="hover:text-white border-gray-600 hover:bg-gray-700"
-                  >
-                    Bet
-                  </Button>
+                <div className="flex justify-between space-x-4 items-center">
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={`https://noun-api.com/beta/pfp?name=${challenger_1_Address}`}
+                      alt="Avatar 1"
+                      className="w-10 h-10 rounded-full mb-2"
+                    />
+                    <Button
+                      variant="secondary"
+                      className="hover:text-white border-gray-600 hover:bg-gray-700"
+                    >
+                      Vote
+                    </Button>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={`https://noun-api.com/beta/pfp?name=${challenger_2_Address}`}
+                      alt="Avatar 2"
+                      className="w-10 h-10 rounded-full mb-2"
+                    />
+                    <Button
+                      variant="secondary"
+                      className="hover:text-white border-gray-600 hover:bg-gray-700"
+                    >
+                      Vote
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -141,7 +163,11 @@ const MainPage = () => {
               </div>
             </AlertDescription>
             <div className="flex justify-end mt-4">
-              <Button variant="default" className="text-black" onClick={handleJoinModalClose}>
+              <Button
+                variant="default"
+                className="text-black"
+                onClick={handleJoinModalClose}
+              >
                 Join
               </Button>
             </div>
