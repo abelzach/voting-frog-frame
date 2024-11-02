@@ -1,53 +1,56 @@
+// @ts-nocheck
 "use client";
 import React, { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { Button } from "./components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
-import { Input } from "./components/ui/input";
+import { Card, CardContent, CardHeader } from "./components/ui/card";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import BiconomyTest from "./components/test";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const games = [
   {
     id: 1,
     title: "Game 1",
     description: "This is the description for Game 1. Who are you betting on?",
+    challenger_1: "Challenger 1A",
+    challenger_2: "Challenger 1B",
   },
   {
     id: 2,
     title: "Game 2",
     description: "This is the description for Game 2. Who are you betting on?",
+    challenger_1: "Challenger 2A",
+    // challenger_2 is missing
   },
   {
     id: 3,
     title: "Game 3",
-    description: "This is the description for Game 3. Who are you betting on?",
+    description: "Do you want to join this game?",
+    // challengers are missing
   },
   {
     id: 4,
     title: "Game 4",
     description: "This is the description for Game 4. Who are you betting on?",
+    challenger_1: "Challenger 4A",
+    challenger_2: "Challenger 4B",
   },
   {
     id: 5,
     title: "Game 5",
     description: "This is the description for Game 5. Who are you betting on?",
+    challenger_1: "Challenger 5A",
+    // challenger_2 is missing
   },
 ];
 
 const MainPage = () => {
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Physical Game");
   const [challenger_1_Address, setChallenger_1_Address] = useState("address1");
   const [challenger_2_Address, setChallenger_2_Address] = useState("address2");
-
-  const handleJoinClick = () => {
-    setIsJoinModalOpen(true);
-  };
-
-  const handleJoinModalClose = () => {
-    setIsJoinModalOpen(false);
+  const router = useRouter();
+  const handleJoinClick = (id:string) => {
+    router.push(`/terms/${id}`);
   };
 
   return (
@@ -72,7 +75,7 @@ const MainPage = () => {
             >
               <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
               <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-                Join a game
+                Create a game
               </span>
             </button>
           </div>
@@ -83,97 +86,61 @@ const MainPage = () => {
               key={game.id}
               className="transform hover:scale-105 transition-all duration-300 bg-gray-800 shadow-lg rounded-lg overflow-hidden"
             >
-              <CardHeader>
-                <CardTitle>{game.title}</CardTitle>
-              </CardHeader>
+              <CardHeader
+                title={game.title}
+                onDetailsClick={game.challenger_1 && game.challenger_2 ? () => {
+                  console.log(`More details for ${game.title}`);
+                  router.push(`/decide/${game.id}`);
+                } : undefined}
+              ></CardHeader>
+
               <CardContent>
                 <p className="mb-4 text-gray-400">{game.description}</p>
                 <div className="flex justify-between space-x-4 items-center">
-                  <div className="flex flex-col items-center">
-                    <img
-                      src={`https://noun-api.com/beta/pfp?name=${challenger_1_Address}`}
-                      alt="Avatar 1"
-                      className="w-10 h-10 rounded-full mb-2"
-                    />
+                  {game.challenger_1 && game.challenger_2 ? (
+                    <>
+                      <div className="flex flex-col items-center">
+                        <img
+                          src={`https://noun-api.com/beta/pfp?name=${game.challenger_1}`}
+                          alt="Avatar 1"
+                          className="w-10 h-10 rounded-full mb-2"
+                        />
+                        <Button
+                          variant="secondary"
+                          className="hover:text-white border-gray-600 hover:bg-gray-700 bg-gray-200"
+                        >
+                          Vote
+                        </Button>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <img
+                          src={`https://noun-api.com/beta/pfp?name=${game.challenger_2}`}
+                          alt="Avatar 2"
+                          className="w-10 h-10 rounded-full mb-2"
+                        />
+                        <Button
+                          variant="secondary"
+                          className="hover:text-white border-gray-600 hover:bg-gray-700 bg-gray-200"
+                        >
+                          Vote
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
                     <Button
+                      onClick={() => handleJoinClick(game.id)}
                       variant="secondary"
-                      className="hover:text-white border-gray-600 hover:bg-gray-700"
+                      className="hover:text-white border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
                     >
-                      Vote
+                      Join game
                     </Button>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <img
-                      src={`https://noun-api.com/beta/pfp?name=${challenger_2_Address}`}
-                      alt="Avatar 2"
-                      className="w-10 h-10 rounded-full mb-2"
-                    />
-                    <Button
-                      variant="secondary"
-                      className="hover:text-white border-gray-600 hover:bg-gray-700"
-                    >
-                      Vote
-                    </Button>
-                  </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
-
-      {isJoinModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
-          <Alert className="w-full max-w-md">
-            <AlertTitle>Join Game</AlertTitle>
-            <AlertDescription>
-              <div className="space-y-4">
-                <div className="relative">
-                  <button
-                    type="button"
-                    className="w-full bg-gray-200 rounded-md py-2 px-4 text-left"
-                    onClick={() =>
-                      setSelectedOption((prev) =>
-                        prev === "Physical Game" ? "Web3" : "Physical Game"
-                      )
-                    }
-                  >
-                    {selectedOption}
-                  </button>
-                  {selectedOption === "Web3" && (
-                    <div className="absolute bg-white rounded-md shadow-lg p-2 w-full z-10">
-                      <button
-                        type="button"
-                        className="w-full py-2 px-4 hover:bg-gray-100"
-                        onClick={() => setSelectedOption("Physical Game")}
-                      >
-                        Physical Game
-                      </button>
-                      <button
-                        type="button"
-                        className="w-full py-2 px-4 hover:bg-gray-100"
-                        onClick={() => setSelectedOption("Quiz")}
-                      >
-                        Quiz
-                      </button>
-                    </div>
-                  )}
-                </div>
-                <Input placeholder="Enter your name" />
-              </div>
-            </AlertDescription>
-            <div className="flex justify-end mt-4">
-              <Button
-                variant="default"
-                className="text-black"
-                onClick={handleJoinModalClose}
-              >
-                Join
-              </Button>
-            </div>
-          </Alert>
-        </div>
-      )}
     </div>
   );
 };
