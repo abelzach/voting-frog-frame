@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({ children, className, onClick }) => {
 
 interface CardHeaderProps {
   title: string;
-  onDetailsClick: () => void;
+  onDetailsClick?: () => void;
   children?: React.ReactNode;
 }
 export const CardHeader: React.FC<CardHeaderProps> = ({

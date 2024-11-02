@@ -1,4 +1,3 @@
-//@ts-nocheck
 'use client'
 
 import React, { useEffect, useState } from "react"
@@ -150,7 +149,7 @@ export default function Component() {
               }`}
               onClick={() => handleChatSelect('bot')}
             >
-              <CardHeader>
+              <CardHeader title="">
                 <CardTitle className="text-sm font-medium">MyBot</CardTitle>
               </CardHeader>
               <CardContent>
@@ -166,7 +165,7 @@ export default function Component() {
                 }`}
                 onClick={() => handleChatSelect(chat.id)}
               >
-                <CardHeader>
+                <CardHeader title="">
                   <CardTitle className="text-sm font-medium">{chat.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
